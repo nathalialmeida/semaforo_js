@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atividade Semaforo</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!--Titulo-->
+    <div id="h1">
+      <h1>Farol</h1>
+    </div>
+    <!--fim Titulo-->
+    <!--semaforo-->
+    <div id="container">
+      <div class="status cor" id="vermelho"></div>
+      <div class="status cor" id="amarelo"></div>
+      <div class="status cor" id="verde"></div>
+    </div>
+    <!--fim semaforo-->
+    <!--Pedestre-->
+    <div>
+      <div class="cor" id="pedestre"><h3></h3></div>
+    </div>
+    <!--fim pedestre-->
+    <!--botões -->
+
+    <div id="div" class="button">
+      <button class="button" onclick="comecar()">Iniciar</button>
+      <button class="button" onclick="manutencao()">Manutenção</button>
+      <button class="button" onclick="AddPedestre()">Pedestre</button>
+    </div>
+    <!--fim dos botões-->
+
+    <script>
+      //Declaração de variaveis para chamada da função
+      var red = document.getElementById("vermelho");
+      var yellow = document.getElementById("amarelo");
+      var green = document.getElementById("verde");
+      var pedestre = document.getElementById("pedestre");
+      //Declaração de variaveis contadoras
+      var cont = 0;
+      var contAm = 0;
+      var contVer = 0;
+      var contVerd = 0;
+      var contP = 0;
+      //Declaração de variaveis contadoras
+      var timerManutencao = undefined;
+      var timerComecar = undefined;
+
+      /*Na função começar é executado o farol, onde é iniciado uma variavel de 
+      tempo indefinido que vai conter uma função setInterval para iniciara a contagem do farol e as mudancças de cores*/
+      var comecar = function () {
+        clearInterval(timerManutencao);
+        clearInterval(timerComecar);
+        var timerComecar = setInterval(function () {
+          cont++;
+          /*No if e else if contem os parametros determinados para que a condição funcione, com um contador de cada cor, limite de tempo
+          cores adicionadas e excluidas para o funcionamento da função*/
+          if (cont <= 20) {
+            contVerd++;
+            green.innerHTML = contVerd;
+
+            red.classList.remove("vermelhoAll");
+            red.classList.add("cor");
+            green.classList.remove("cor");
+            green.classList.add("verdeAll");
+            yellow.classList.remove("amareloAll");
+            yellow.classList.add("cor");
+            pedestre.classList.remove("cor");
+            pedestre.classList.add("vermelhoAll");
+
+            green.innerHTML = " ";
+            red.innerHTML = " ";
+
+            green.innerHTML = "0" + contVerd;
+            /*Condição para quando for maior ou igual a 10 o zero que foi adicionado não aparecer*/
+            if (contVerd >= 10) {
+              green.innerHTML = contVerd;
+            }
+          } else if (cont > 20 && cont <= 24) {
+            contAm++;
+            yellow.innerHTML = contAm;
+
+            green.classList.remove("verdeAll");
+            green.classList.add("cor");
+            yellow.classList.remove("cor");
+            yellow.classList.add("amareloAll");
+
+            green.innerHTML = " ";
+
+            yellow.innerHTML = "0" + contAm;
+            /*Condição para quando for maior ou igual a 5 o zero que foi adicionado não aparecer*/
+            if (contAm > 5) {
+              yellow.innerHTML = contAm;
+            }
+          } else if (cont > 24 && cont < 35) {
+            contVer++;
+            red.innerHTML = contVer;
+
+            yellow.classList.remove("amareloAll");
+            yellow.classList.add("cor");
+            red.classList.remove("cor");
+            red.classList.add("vermelhoAll");
+
+            pedestre.classList.add("verdeAll");
+
+            yellow.innerHTML = " ";
+
+            red.innerHTML = "0" + contVer;
+            /*Condição para quando for maior ou igual a 10 o zero que foi adicionado não aparecer*/
+            if (contVer >= 10) {
+              red.innerHTML = contVer;
+            }
+            /*Nesse if é realizado a condição do pedestre do botão, alternando as cores quando o farol mudar*/
+            if (contVer % 2 == 0 && contVer > 5) {
+              pedestre.classList.remove("verdeAll");
+              pedestre.classList.add("cor");
+            }
+          } else {
+            cont = 0;
+            contAm = 0;
+            contVer = 0;
+            contVerd = 0;
+            contp++;
+          }
+        }, 1000);
+      };
+
+      var manutencao = function () {
+        clearInterval(timerComecar);
+        clearInterval(timerManutencao);
+        timerManutencao = setInterval(function () {
+          cont++;
+          if (cont % 2 == 0) {
+            yellow.classList.remove("cor");
+            yellow.classList.add("amareloAll");
+            green.classList.remove("verdeAll");
+            green.classList.add("cor");
+            red.classList.remove("vermelhoAll");
+            red.classList.add("cor");
+            
+
+            green.innerHTML = " ";
+            red.innerHTML = " ";
+
+            pedestre.classList.remove("vermelhoAll");
+            pedestre.classList.add("cor");
+            
+          } else {
+            yellow.classList.remove("amareloAll");
+            yellow.classList.add("cor");
+
+            pedestre.classList.add("vermelhoAll");
+            pedestre.classList.remove("cor");
+          }
+        }, 500);
+      };
+
+      var AddPedestre = function () {
+        clearInterval(timerComecar);
+        clearInterval(timerManutencao);
+        //clearInterval(setPedestre);
+
+        contp++;
+        var setPedestre = setInterval(function () {
+          if (contp <= 19 && contp >= 3) {
+            contp = 0;
+            cont = 21;
+            comecar();
+          }
+        }, 1000);
+      };
+    </script>
+  </body>
+</html>
